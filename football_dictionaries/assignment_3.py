@@ -1,28 +1,22 @@
+from .assignment_1 import players_as_dictionaries
+
+# Assignment 3: This function will return the players grouped by country, and per each country, grouped by position. 
+
+# Note: this is similar to Assignment 2, with one additional layer of nesting. 
+
+
 def players_by_country_and_position(squads_list):
-    
-    position_list = []
-    country = {}
+    squad = players_as_dictionaries(squads_list)   # from assignment 1
+    by_country = {}
 
-    for each_list in squads_list:
-        new_dict = {"caps": each_list[4],
-        "position": each_list[1], 
-        "name": each_list[2], 
-        "date_of_birth": each_list[3], 
-        "number": each_list[0], 
-        "club": each_list[5], 
-        "country": each_list[7], 
-        "club_country": each_list[6], 
-        "year": each_list[8]}
-    
-        club_country = each_list[6]
-        player_position = each_list[1]
+    for player in squad:
+        position = player["position"]
+        country = player["country"]
+        
+        by_country.setdefault(country, {})
+        by_country[country].setdefault(position, [])
+        
+        by_country[country][position].append(player)
 
-        if club_country in country:
-        	if player_position in country[club_country]:
-        		country[club_country][player_position].append(new_dict)
-        	else:
-        		country[club_country][player_position] = [new_dict]
-        else:
-        	country[club_country] = {player_position : [new_dict]}
-    
-    return country
+    return by_country
+
